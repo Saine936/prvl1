@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - {{ shop.name }}</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e; /* Dark gray background */
+            color: #f5f5f5;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: #2a2a2a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #444;
+        }
+
+        header .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #f5f5f5;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #f5f5f5;
+            transition: color 0.3s;
+        }
+
+        header nav ul li a:hover {
+            color: #e63946;
+        }
+
+        .cart-btn {
+            font-size: 1.5rem;
+            color: #f5f5f5;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .cart-btn:hover {
+            color: #e63946;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: url('{{ "hero-bg-dark.jpg" | asset_url }}') no-repeat center center/cover;
+            text-align: center;
+            color: #f5f5f5;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin: 0;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: #d1d1d1;
+        }
+
+        .hero a {
+            text-decoration: none;
+            padding: 15px 30px;
+            background-color: #e63946;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .hero a:hover {
+            background-color: #d32f2f;
+        }
+
+        .featured-section {
+            padding: 80px 50px;
+            background-color: #1e1e1e;
+        }
+
+        .featured-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #f5f5f5;
+        }
+
+        .featured-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .item {
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #444;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .item img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .item h3 {
+            margin: 10px 0;
+        }
+
+        .item .price {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            color: #e63946;
+        }
+
+        .item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2a2a2a;
+            color: #f5f5f5;
+            border-top: 1px solid #444;
+        }
+
+        footer .socials {
+            margin: 20px 0;
+        }
+
+        footer .socials a {
+            margin: 0 10px;
+            font-size: 1.5rem;
+            color: #f5f5f5;
+            text-decoration: none;
+        }
+
+        footer .socials a:hover {
+            color: #e63946;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">{{ shop.name }}</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="#featured">Featured</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="cart-btn" onclick="window.location.href='/cart'">🛒</button>
+    </header>
+
+    <section class="hero">
+        <h1>{{ shop.name }}</h1>
+        <p>Redefining Streetwear</p>
+        <a href="#featured">Explore Collection</a>
+    </section>
+
+    <section id="featured" class="featured-section">
+        <h2>Featured Products</h2>
+        <div class="featured-items">
+            {% for product in collections.featured.products %}
+            <div class="item">
+                <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}">
+                <h3>{{ product.title }}</h3>
+                <p>{{ product.description | truncate: 80 }}</p>
+                <p class="price">{{ product.price | money }}</p>
+                <button onclick="window.location.href='{{ product.url }}'">Add to Bag</button>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <footer>
+        <p>Contact us: info@prvl.com</p>
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+    </footer>
+</body>
+</html>
